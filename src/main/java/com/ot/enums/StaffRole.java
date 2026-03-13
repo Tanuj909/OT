@@ -11,6 +11,9 @@ public enum StaffRole {
     SURGICAL_TECH,
     ANESTHESIA_TECHNICIAN,
     OT_TECHNICIAN,
+    
+    // Anesthesia Doctors
+    ANESTHESIOLOGIST,
 
     // Support staff
     ORDERLY,

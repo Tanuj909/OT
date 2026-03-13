@@ -2,8 +2,11 @@ package com.ot.entity;
 
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ot.enums.SurgeryStatus;
+import com.ot.enums.VolumeUnit;
 
 import jakarta.persistence.*;
 
@@ -39,10 +42,14 @@ public class IntraOpRecord {
     private String woundClosure;
     
     private Integer bloodLoss;
-    private String bloodLossUnit;
+    @Enumerated(EnumType.STRING)
+    private VolumeUnit bloodLossUnit;
     
-    private String ivFluids;
-    private Integer ivFluidsVolume;
+//    private String ivFluids;
+//    private Integer ivFluidsVolume;
+    
+    @OneToMany(mappedBy = "intraOpRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<IVFluidRecord> ivFluids = new ArrayList<>();
     
     private String urineOutput;
     private String drainOutput;

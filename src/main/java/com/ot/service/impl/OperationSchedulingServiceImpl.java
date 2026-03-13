@@ -5,6 +5,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.ot.dto.scheduleOperationRequest.ScheduleOperationRequest;
+import com.ot.embed.StaffAssignment;
+import com.ot.embed.SurgeonAssignment;
 import com.ot.entity.Hospital;
 import com.ot.entity.OTRoom;
 import com.ot.entity.OTSchedule;
@@ -13,6 +15,8 @@ import com.ot.entity.User;
 import com.ot.enums.OperationStatus;
 import com.ot.enums.RoomStatus;
 import com.ot.enums.ScheduleType;
+import com.ot.enums.StaffRole;
+import com.ot.enums.SurgeonRole;
 import com.ot.exception.BadRequestException;
 import com.ot.exception.OperationNotAllowedException;
 import com.ot.exception.ResourceNotFoundException;
@@ -109,10 +113,29 @@ public class OperationSchedulingServiceImpl implements OperationSchedulingServic
         
         // update operation
         operation.setRoom(room);
-        operation.setPrimarySurgeonId(request.getSurgeonId());
-        operation.setPrimarySurgeonName(request.getSurgeonName());
-        operation.setAnesthesiologistId(request.getAnesthesiologistId());
-        operation.setAnesthesiologistName(request.getAnesthesiologistName());
+        
+        // ADD karo — SurgeonAssignment table mein daalo
+        if (request.getSurgeonId() != null) {
+            SurgeonAssignment primarySurgeon = SurgeonAssignment.builder()
+                    .surgeonId(request.getSurgeonId())
+                    .surgeonName(request.getSurgeonName())
+                    .role(SurgeonRole.LEAD_SURGEON)
+                    .isPrimary(true)
+                    .build();
+
+            operation.getSupportingSurgeons().add(primarySurgeon);
+        }
+        
+     // ADD karo — Anesthesiologist
+        if (request.getAnesthesiologistId() != null) {
+            StaffAssignment anesthesiologist = StaffAssignment.builder()
+                    .staffId(request.getAnesthesiologistId())
+                    .staffName(request.getAnesthesiologistName())
+                    .role(StaffRole.ANESTHESIOLOGIST)
+                    .build();
+            operation.getSupportingStaff().add(anesthesiologist);
+        }
+        
         operation.setScheduledStartTime(request.getStartTime());
         operation.setScheduledEndTime(request.getEndTime());
         operation.setStatus(OperationStatus.SCHEDULED);

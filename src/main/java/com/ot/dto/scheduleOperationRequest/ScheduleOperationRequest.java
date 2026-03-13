@@ -9,10 +9,10 @@ public class ScheduleOperationRequest {
 
     private Long roomId;
 
-    private String surgeonId;
+    private Long surgeonId;
     private String surgeonName;
 
-    private String anesthesiologistId;
+    private Long anesthesiologistId;
     private String anesthesiologistName;
 
     private LocalDateTime startTime;

@@ -31,4 +31,12 @@ public class OTRoleConstants {
         RoleType.ORDERLY,
         RoleType.OT_ASSISTANT
     );
+    
+    public static final Set<RoleType> ALLOWED_SURGERY_START_ROLES = Set.of(
+        RoleType.SURGEON,
+        RoleType.ANESTHESIOLOGIST,
+        RoleType.ADMIN,
+        RoleType.HOSPITAL_ADMIN,
+        RoleType.RECEPTIONIST
+    );
 }
